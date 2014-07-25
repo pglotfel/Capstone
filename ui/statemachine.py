@@ -4,6 +4,8 @@ Created on Jul 25, 2014
 @author: Paul
 '''
 
+import time
+
 if __name__ == '__main__':
     pass
 
@@ -15,22 +17,33 @@ def generateInputVector(num_inputs):
         
     return ret
 
-def stateone():
-    return 1
+#Make states return the next state...
+
+def state_zero(input_vector):
     
-def statetwo():
-    return 2
+    print('state zero!')
+    
+    if(input_vector[0] is 0):
+        return 0
+    else:
+        return 1;  
+    
+def state_one():
+    return 0
     
     
     
-states = {0 : stateone,
-          1 : statetwo,   
+states = {0 : state_zero,
+          1 : state_one,   
           }
 
+current_state = 0
+system_input = generateInputVector(5)
 
-print(states.get(1)())
-print(states.get(0)())
-print(generateInputVector(5))
+
+while(1):
+    current_state = states.get(current_state)(system_input)
+    time.sleep(1)
 
 
 
