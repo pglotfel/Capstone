@@ -38,8 +38,9 @@ states = {0 : state_zero,
           }
 
 current_state = 0
-system_input = generateInputVector(5)
+system_input = generateInputVector(2)
 
+#Try making a test that has a 'forward' and a 'back' button.  Forward goes to some sort of information?  Maybe a map?
 
 while(1):
     current_state = states.get(current_state)(system_input)
@@ -49,6 +50,10 @@ while(1):
 
 
 
-#This works as expected!  Now make the actual program to switch between states...
+
+
+
+
+
 
     
