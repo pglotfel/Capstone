@@ -34,19 +34,37 @@ import time
 #Okay, I can definitely make these states better.  I should make them that you just initialize the state with a function
 #that you want it to run and a dictionary of things to return based on the input it receives...
 
+
+def mark_received(input_vector):
+    for i in range(len(input_vector)):
+        input_vector[i] = 0;
+
 class State:
-    def __init__(self, function, next_state):
+    def __init__(self, id, function, next_state):
+        self.id = id
         self.function = function
         self.next_state = next_state
         
     def run(self, input_vector):
         
-        current_input = input_vector.index(1);
+        try:
+            current_input = input_vector.index(1);
+        except ValueError:
+            #Case when no input...
+            self.function();
+            if(type(self.next_state) is list):
+                return self.id
+            else:
+                return self.next_state
         
         self.function();
         
-        return self.next_state[current_input];
-         
+        mark_received(input_vector)
+        
+        if(type(self.next_state) is list):     
+            return self.next_state[current_input]
+        else:
+            return self.next_state
 
 if __name__ == '__main__':
     pass
@@ -58,27 +76,6 @@ def generateInputVector(num_inputs):
         ret.append(0)
         
     return ret
-
-def mark_received(input_vector):
-    for i in range(len(input_vector)):
-        input_vector[i] = 0;
-
-#Make states return the next state...
-
-# def state_zero(input_vector):
-#      
-#     print('state zero!')
-#      
-#     ret = 0;
-#      
-#      if(input_vector[1]):
-#         ret = 1
-#      
-#     elif(input_vector[2]):
-#         ret = 2
-#          
-#     mark_received(input_vector)
-#     return ret
     
 def state_one(input_vector):
     
@@ -144,28 +141,31 @@ def state_eight(input_vector):
 
 #NEW STATES! :D Much fancier!
 
-state_zero = State(lambda: print('state_zero'), [0, 1, 2, 0, 0, 0])
+   
+states = {0 : State(0, lambda: print('state_zero'), [0, 1, 2, 0, 0, 0]),
+          1 : State(1, lambda: print('report a problem'), [3, 4, 5, 6, 7, 0]), 
+          2 : State(2, lambda: print('view information '), [0, 0, 0, 0, 0, 0]), 
+          3 : State(3, lambda: print('Chain broken report'), 8),
+          4 : State(4, lambda: print('Seat damaged'), 8),
+          5 : State(5, lambda: print('Flat tire'), 8),
+          6 : State(6, lambda: print('Missing basket'), 8),
+          7 : State(7, lambda: print('Other'), 8),
+          8 : State(8, state_eight, 0)}
 
-state_one = State(lambda: print('report a problem'), [3, 4, 5, 6, 7, 0])
+print(states.get(0).run([0, 0, 0, 0, 0, 0]))
 
-print(state_zero.run([0, 1, 0]))
-    
-states = {0 : state_zero,
-          1 : state_one,  
-          3 : state_three,
-          4 : state_four, 
-          5 : state_five,
-          6 : state_six,
-          7: state_seven,
-          8 : state_eight}
+print(states.get(3).run([0, 0, 0, 0, 0, 0]))
+
+print(states.get(3).run([0, 1]));
 
 current_state = 0
 system_input = generateInputVector(5)
 
+
 #Try making a test that has a 'forward' and a 'back' button.  Forward goes to some sort of information?  Maybe a map?
 
 #while(1):
-#   current_state = states.get(current_state)(system_input)
+#   current_state = states.get(current_state).run(input_vector)
 #  time.sleep(1)
 
 
