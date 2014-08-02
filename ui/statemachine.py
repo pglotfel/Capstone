@@ -3,7 +3,7 @@ Created on Jul 25, 2014
 
 @author: Paul
 '''
-
+from __future__ import print_function
 import time
 
 #STATE INFORMATION##########################################################
@@ -34,6 +34,19 @@ import time
 #Okay, I can definitely make these states better.  I should make them that you just initialize the state with a function
 #that you want it to run and a dictionary of things to return based on the input it receives...
 
+class State:
+    def __init__(self, function, next_state):
+        self.function = function
+        self.next_state = next_state
+        
+    def run(self, input_vector):
+        
+        current_input = input_vector.index(1);
+        
+        self.function();
+        
+        return self.next_state[current_input];
+         
 
 if __name__ == '__main__':
     pass
@@ -52,20 +65,20 @@ def mark_received(input_vector):
 
 #Make states return the next state...
 
-def state_zero(input_vector):
-    
-    print('state zero!')
-    
-    ret = 0;
-    
-    if(input_vector[1]):
-        ret = 1
-    
-    elif(input_vector[2]):
-        ret = 2
-        
-    mark_received(input_vector)
-    return ret
+# def state_zero(input_vector):
+#      
+#     print('state zero!')
+#      
+#     ret = 0;
+#      
+#      if(input_vector[1]):
+#         ret = 1
+#      
+#     elif(input_vector[2]):
+#         ret = 2
+#          
+#     mark_received(input_vector)
+#     return ret
     
 def state_one(input_vector):
     
@@ -128,6 +141,14 @@ def state_eight(input_vector):
     return 0
     
 #Intialize state dictionary
+
+#NEW STATES! :D Much fancier!
+
+state_zero = State(lambda: print('state_zero'), [0, 1, 2, 0, 0, 0])
+
+state_one = State(lambda: print('report a problem'), [3, 4, 5, 6, 7, 0])
+
+print(state_zero.run([0, 1, 0]))
     
 states = {0 : state_zero,
           1 : state_one,  
@@ -139,13 +160,13 @@ states = {0 : state_zero,
           8 : state_eight}
 
 current_state = 0
-system_input = generateInputVector()
+system_input = generateInputVector(5)
 
 #Try making a test that has a 'forward' and a 'back' button.  Forward goes to some sort of information?  Maybe a map?
 
-while(1):
-    current_state = states.get(current_state)(system_input)
-    time.sleep(1)
+#while(1):
+#   current_state = states.get(current_state)(system_input)
+#  time.sleep(1)
 
 
 
