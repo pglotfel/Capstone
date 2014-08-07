@@ -3,8 +3,6 @@
 \usepackage[parfill]{parskip}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 
-
-
 \begin{document}
 
 \title{User Interface and Embedded System  \\ Technical Report}
@@ -25,9 +23,10 @@ This report covers the research, design, analysis, and prototyping of the team 2
 
 \chapter{Initial Requirements}
 
-The initial requirements were set forth in the form of a system from which customers can rent bicycles.  The purpose of this product is to enrich the communication and relationship between York College and its surrounding community.  To facilitate this project, certain major specifications are required from the ABRS system.  The bike rack must be able to operate year-round, customers return bikes to the same stations from which they were rented, and the ABRS must be able to sufficiently power itself when a grid connection is unavailable.  These criteria present unique problems to each engineering group working on the project.  However, this report specifically covers the requirements the criteria imposed on the computer engineering portion of the ABRS.  
+The initial requirements were set forth in the form of a system from which customers can rent bicycles.  The purpose of this product is to enrich the communication and relationship between York College and its surrounding community.  To facilitate this project, certain specifications are required from the ABRS system.  The bike rack must be able to operate year-round; customers return bikes to the same stations from which they were rented; and the ABRS must be able to sufficiently power itself when a grid connection is unavailable.  These criteria present unique problems to each engineering group working on the project.  However, this report specifically covers the requirements imposed on the computer engineering portion of the ABRS.  
 
 \section{General Guidelines}
+\label{sec:general-guidelines}
 
 The general guidelines are: the ABRS must consist of a kiosk (a central unit housing the display and handling customer interactions) and one to five bike modules.  Each bike module will house five bikes with individual locking stations for each one.  The entire unit must be generally resilient to physical damage.  In addition, it must be completely safe for operation with young children as well as adults.    
 
@@ -37,7 +36,7 @@ In order for the bike system to operate year round, the components selected for 
 
 \section{Return Procedure}
 
-As this is a product being designed for the general consumer, the end result is to be as intuitive and simple as possible.  Thus, when customers return bicycles, the checkout procedure must be straightforward.  Under optimal conditions, the customers will simply return the bicycle to the ABRS and their account will be appropriately charged.  In order for the system to discern which bike is being returned, it must be able to uniquely identify bikes.
+As this product is for the general consumer, the end result is to be as intuitive and simple as possible.  Thus, when customers return bicycles, the checkout procedure must be straightforward.  Under optimal conditions, the customers will simply return the bicycle to the ABRS; and their account will be appropriately charged.  In order for the system to discern which bike is being returned, it must be able to uniquely identify bikes.
 
 \section{System Power}
 
@@ -49,11 +48,11 @@ After receiving the requirements and laying out some criteria, developments were
 
 \section{Communications Protocol}
 
-In general, the system can be described as a central kiosk unit communicating by some protocol to each of the individual bike modules.  This description is the core of the ABRS from an engineering perspective.  To facilitate easy of programming and quick prototyping, a wired approach was selected.  That is, a scheme in which the kiosk is directly connected to each of the bike modules and directly controls the bike locking mechanisms.  
+In general, the system can be described as a central kiosk unit communicating by some protocol to each of the individual bike modules.  This description is the core of the ABRS from a computer engineering perspective.  To facilitate ease of programming and quick prototyping, a wired approach was selected.  That is, a scheme in which the kiosk is directly connected to each of the bike modules and directly controls the bike locking mechanisms.  
 
-The initial thought was to use wireless communication for this purpose.  Wireless communication ubiquitous in modern systems.  In addition, it allows for easy communication between the kiosk and each bike module.  However, it does present an entirely new set of problems to address: the wireless communications must be encrypted and each bike module must be equipped with an embedded component capable of handling wireless transmission, adding additional cost to the system.  The largest issue with wireless is the time required to develop software to ensure the security of the system, and the conclusion is that security protocols and, thus, wireless transmission are outside the scope of this capstone iteration.  
+The initial thought was to use wireless communication for this purpose.  Wireless communication ubiquitous in modern systems.  In addition, it allows for easy communication between the kiosk and each bike module.  However, it presents entirely new set of problems to address: the wireless communications must be encrypted and each bike module must be equipped with an embedded component capable of handling wireless transmission, adding additional cost to the system.  The largest issue with wireless is the time required to develop software to ensure the security of the system.  The conclusion is that security protocols and, thus, wireless transmission are outside the scope of this capstone iteration.  
 
-Because of the issues with wireless communication,  it is far more efficient in terms of time and cost to use a wired approach.  In particular, a scheme in which the kiosk is directly connected to each of the bike modules and directly controls the bike locking mechanisms (discussed further in section ???), resulting in the rough system model shown in Figure 2.1. 
+Because of the issues with wireless communication,  it is far more efficient in terms of time and cost to use a wired approach.  In particular, a scheme in which the kiosk is directly connected to each of the bike modules and directly controls the bike locking mechanisms (discussed further in Section~\ref{sec:locking-mechanism}), resulting in the rough system model shown in Figure 2.1. 
 
 %0.6 seems to be a really good size for figures :)
 
@@ -65,7 +64,7 @@ Because of the issues with wireless communication,  it is far more efficient in 
 
 \end{figure}
 
-The communication protocol's purpose is twofold: allowing the kiosk to unlock bikes and allowing the stations to supply the kiosk with bike information.  Generally, there are two major use cases in which the protocol is used: a user rents a bike and a user returns a bike.  The case for a user renting a bike is as follows: 
+The communication protocol's purpose is twofold: allowing the kiosk to unlock bikes and permitting the stations to supply the kiosk with bike information.  Generally, there are two major use cases in which the protocol is used: a user rents a bike and a user returns a bike.  As an example, the case for a user renting a bike is as follows: 
 
 \begin{enumerate}
 
@@ -77,48 +76,119 @@ The communication protocol's purpose is twofold: allowing the kiosk to unlock bi
 
 \end{enumerate}
 
-\section{User Interactions}
+The end system will have more complex communication sequences.  The general case is represented here.
 
-The chosen display for the ABRS is an industrial LCD screen.  The manner in which the system interacts with the user is the single most important goal for the ABRS to achieve.  The system must offer an interface that is aesthetically pleasing and intuitive to navigate.  These criteria guided the team to initially discuss using a touchscreen for the kiosk display.  However, background research revealed that the temperature ranges in York, Pennsylvania would be too harsh for a touchscreen to operate effectively in all conditions.  In addition, touchscreens would be highly uncomfortable to use in winter weather.  An LCD would allow for intuitive usage as well as temperature resistivity and physical endurance.
+\section{User Interactions}
+\label{sec:user-interactions}
+
+The chosen display for the ABRS is an industrial LCD screen.  The manner in which the system interacts with the user is the single most important goal for the ABRS to achieve.  The system must offer an interface that is aesthetically pleasing and intuitive to navigate.  These criteria guided the team to initially discuss using a touchscreen for the kiosk display.  However, background research revealed that the temperature ranges in York, Pennsylvania would be too harsh for a touchscreen to operate effectively in all conditions.  In addition, touchscreens are troublesome to use in winter weather.  An LCD would allow for intuitive usage as well as temperature resistivity and physical endurance.
 
 To interact with the kiosk, there is a set of buttons which allows the user to navigate through the menu, much like an ATM.  This interface is familiar and easy to implement, resulting in a solution that is simple, durable, and intuitive.  
 
 
 \section{Locking Mechanism}
+\label{sec:locking-mechanism}
 
-To promote fault tolerance, each locking mechanism is operated by a microcontroller.  This choice was made for two reasons.  The ABRS is generally described by a kiosk controlling 1 to 5 modules.  With a microcontroller for each locking mechanism, if a bike station in a module fails, the other four stations can continue in their operation with no hindrance.  Similarly, the end product is intended to make money.  Therefore, having the system operating at max efficiency at any given time is desired.  The chosen locking mechanism scheme facilitates this outcome, of a rough diagram of the system can be seen in Figure 2.2. 
+To promote fault tolerance, each locking mechanism is operated by a microcontroller.  This choice was made for two reasons.  The ABRS is generally described by a kiosk controlling 1 to 5 modules.  With a microcontroller for each locking mechanism, if a bike station in a module fails, the other four stations can continue in their operation with no hindrance.  In addition, the end product is intended to make money.  Therefore, having the system operating at max efficiency at any given time is desired.  The chosen locking mechanism scheme facilitates this outcome, and a rough diagram of the system can be seen in Figure~\ref{fig:module-block-diagram}. 
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[scale = 0.6]{module-block-diagram}
+		\includegraphics[scale = 0.45]{module-block-diagram}
 	\end{center}
+      \label{fig:module-block-diagram}
 \caption{A preliminary diagram of a bike module in communication with the kiosk}
-
 \end{figure}
 
-In particular, Figure 2.2 displays a kiosk microcontroller communicating with 5 bike stations.  This case obviously applies to the kiosk and a single bike module.  However, as previously stated, the kiosk has the potential to communicate with up to 5 bike modules or 25 bikes.  The microcontrollers at each bike station are in direct control of their respective locking mechanisms.  In turn, each bike station controller is in direct communication with the kiosk that supplies the bike station controllers with lock, or unlock, commands.
+In particular, Figure~\ref{fig:module-block-diagram} displays a kiosk microcontroller communicating with 5 bike stations.  This case obviously applies to the kiosk and a single bike module.  However, as previously stated, the kiosk has the potential to communicate with up to 5 bike modules or 25 bikes.  The microcontrollers at each bike station are in direct control of their respective locking mechanisms.  In turn, each bike station controller is in direct communication with the kiosk that supplies the bike station controllers with lock, or unlock, commands.
 
 
-\chapter{Component Selection}
+\chapter{Component Selection and Software Design}
 
-With progress made on the communication protocol, user interactions, and locking mechanisms, components are now selected which facilitate the initial developments on each front.
+With progress made on the communication protocol, user interactions, and locking mechanisms, components are selected which facilitate the initial developments on each front.
 
 \section{Communication Protocol Components}
 
-The ABRS will communicate over a Controller Area Network (CAN) protocol.  This protocol is ubiquitous throughout automotive applications, making it an excellent choice for this type of project i.e., a central host controlling many sub-components.  Another important aspect of CAN is its communication distance.  Because there is a potential to have up to 5 modules connected to a single kiosk and assuming a module length of approximately 20 feet, the last module connected to the kiosk could be 100 feet away.  Fortunately, CAN works over distances of 500 meters at a data rate of 125 kb/s \cite{CAN protocol}.  To facilitate CAN communication, a CAN controller and CAN receiver must be purchased.  The specifics of each part are not essential.  The only important criteria is that they withstand the operating temperatures of the ABRS, which almost any embedded component can handle.  
+The ABRS will communicate over a Controller Area Network (CAN) protocol.  This protocol is ubiquitous throughout automotive applications, making it an excellent choice for this type of project i.e., a central host controlling many sub-components.  Another important aspect of CAN is its communication distance.  Because there is a potential to have up to 5 modules connected to a single kiosk and assuming a module length of approximately 20 feet, the last module connected to the kiosk could be 100 feet away.  Fortunately, CAN works over distances of 500 meters at a data rate of 125 kb/s \cite{CAN protocol}.  To facilitate CAN communication, a CAN controller and CAN receiver must be purchased.  The specifics of each part are listed in Appendix~\ref{table:parts}.  The only important criteria is that they withstand the operating temperatures of the ABRS, which almost any embedded component can handle.  Each component within the ABRS (e.g., kiosk, bike station) is connected to the network.  Figure~\ref{fig:can-bus-diagram} shows block diagram for the kiosk communicating with a single bike station.  As stated in Section~\ref{sec:general-guidelines}, the kiosk can be in communication with up to 25 bike stations.  Additionally, the controller handles bus contention as well as message transmission and reception, simplifying the communications network and eliminating unnecessary coding.   
 
-Each component within the ABRS (e.g., kiosk, bike station) is connected to the network, as displayed in Figure 3.1.  The controller handles bus contention as well as message transmission and reception, simplifying the communications network and eliminating unnecessary coding. 
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale = 0.6]{can-bus-diagram}
+	\end{center}
+	\label{fig:can-bus-diagram}
+\caption{the kiosk in communication with a single bike station over CAN}
+\end{figure}
+
+The kiosk controls the locking mechanisms through the network (e.g., unlock, lock commands).  In addition, the kiosk receives data from each station about its bike status (e.g., filled, not filled).  Because the actual transferrence of data is low for this particular project, we did no analysis of data rates.
+
+\section {Display}
+
+     As discussed in Section~\ref{sec:user-interactions}, the chosen display for the ABRS is an LCD display.  In particular, a Kyocera 12.1" industrial LCD display is selected.  In general, the criteria for the screen were specified to allow for operation in the temperature ranges and general visibility in the York, Pennsylvania location.  The specific reasons considered in the selection of this specific screen are visibility, utility, and durability.  
+
+    The selected screen is 12.1" diagonally with a 4:3 aspect ratio, providing easy readability to any user.  In addition, the Kyocera LCD display has a brightness of 1200 Lumens, which allows the screen to be easily viewed.  
+
+    In terms of utility, the chosen display behaves much like a computer monitor.  That is, it comes with an LED driver that permits SVGA input.  This attribute eliminates the need to write a custom display driver, which would be a lengthy process.  In addition, the SVGA input can be utilized by nearly any embedded computer system by purchasing an adapter that is inexpensive and simple to use.
+
+    The Kyocera LCD display is meant for industrial purposes.  Accordingly, the backlight lifetime is around 8 years.  That is, with the screen powered on, the LED backlights lasts 8 years.  This ability has important implications for our project.  At stated in section 1, the expected lifetime of the ABRS is approximately 10 years.  By powering down the screen during low-traffic hours, that lifetime is easily achieveable.  Along the same lines, the display is able to be powered for most of the time the ABRS is active, enabling the placement of ads or other graphics to attract customers to the system.  
+
+\section{Kiosk Embedded System}
+
+For the Kiosk's embedded system, the Raspberry Pi, a popular linux embedded computer, has been selected because it satisfies existing requirements, provides many libraries to utilize, and ensures future viability of the system.  This device is fully capable of interfacing with the selected Kyocera LCD display and communicating over CAN.  In addition, it is widely used.  So, there are many tutorials and libraries already in existance that can be utilized to ensure quick prototype iteration.  Another important aspect of the Raspberry Pi is that it runs a full operating system: Linux.  Linux is very stable, ensuring consistent system operation.  Also, linux has many native wireless and encryption protocols.  In the future when sensitive credit card information needs to be transmitted and stored, this property will be necessary.  
+
+\section{Bike Station Embedded System}
+
+The Atmega168 has been chosen as the microcontroller for the bike station embedded system.  This chip provides easy programmability and a wealth of libraries through the Arduino project, and it fits the needs of the ABRS.  The bike station embedded system simply needs to send bike information over CAN and control the locking mechanism.  Both of these requirements are easily achieved by the selected component.  
+
+\section{User Interface Design}
+
+    The ABRS UI consists of an LCD display and 6 to 8 buttons placed along each side as shown in Figure~\ref{fig:user-interface}.  The user navigates through the UI these buttons.  Becauser this type of navigation is common, it allows the ABRS UI to be intuitive and familiar.    
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[scale = 0.5]{user-interface}
+	\label{fig:user-interface}
+\caption{A diagram of the user interface showing buttons, graphics, and RFID}
+
+\end{figure}
+
+In terms of software, the UI is represented by a series of images that change based on user input.  In particular, as a state machine that is activated by the user pressing various buttons located next to the display.  Because the user never has to select anything on the display within the UI, a simple series of images is sufficient.
+
+In general, the user interacts with the display and UI through the buttons located on either side of the display.  However, there is also an RFID scanneer located directly beneath the screen as shown in Figure~\ref{fig:user-interface}.  The user swipes a pre-allocated card here in order to have the system dispense a bike.  
+
+\section*{Conclusion}
+
+    In summary, during the first capstone development session, initial requirements were specified and initial designs were made.  From these designs, compenents were selected and prototypes made.  A complete listing of these components as well as their associated model numbers is available in Table (ADDDD).
+
 
 %BIB
 
 \begin{thebibliography}{10}
 
 \bibitem{CAN protocol}
-  
-  \emph{$http://en.wikipedia.org/wiki/CAN\_bus$}.
-  August 1, 2014
+ \emph{CAN bus.} (2014, January 8). Wikipedia. Retrieved August 4, 2014, from http://en.wikipedia.org/wiki/CAN\_bus
 
 \end{thebibliography}
 
+
+\newpage
+
+\section*{\\Components} \label{app:parts}
+
+\begin{table}[ht]
+\caption{Selected Components} % title of Table
+\centering % used for centering table
+\begin{tabular}{c c} % centered columns (4 columns)
+\hline\hline %inserts double horizontal lines
+Name & Part Number \\[0.5ex] % inserts table 
+%heading
+\hline % inserts single horizontal line
+Kyocera 12.1" LCD Display & T-55788GD121J-LW-AHN  \\ % inserting body of the table
+Atmel Bikestation Microcontroller & ATmega168 \\
+Raspberry Pi & Model B+\\
+RFID Scanner & ID12-LA \\
+ [1ex] % [1ex] adds vertical space
+\hline %inserts single line
+\end{tabular}
+\label{table:parts} % is used to refer this table in the text
+\end{table}
 
 \end{document}
